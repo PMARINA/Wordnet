@@ -1,39 +1,47 @@
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WordNet {
 	File synsetsFile;
 	File hypernymsFile;
-	Digraph synsets;
 	Digraph hypernyms;
+	List<Synset> synsets = new ArrayList<Synset>();
 
 	// constructor takes the name of the two input files
 	public WordNet(String synsets, String hypernyms) {
 		synsetsFile = new File(synsets);
 		hypernymsFile = new File(hypernyms);
-		test();
-		parseFiles();
+		parseSynsets();
+		parseHypernyms();
 	}
 
-	private void test() {
+	private void parseHypernyms() {
+		hypernyms = new Digraph(synsets.size());
+	}
+
+	private void parseSynsets() {
 		In a = new In(synsetsFile);
 		while (a.hasNextLine()) {
+			Synset dfg;
+			String defenition = null;
+			List<String> terms = new ArrayList<String>();
+			int num = -1;
 			String[] line = a.readLine().split(",");
-			for (int i = 0; i < line.length; i++)
-				if (i == 1) {
+			for (int i = 0; i < line.length; i++) {
+				if (i == 0) {
+					num = Integer.parseInt(line[i]);
+				} else if (i == 1) {
 					String[] samosa = line[i].split(" ");
 					for (int j = 0; j < samosa.length; j++)
-						(samosa[j]);
+						terms.add(samosa[j]);
+				} else {
+					defenition = line[i];
 				}
-				else{
-					System.out.println(line[i]);
-				}
+			}
+			dfg = new Synset(num, terms, defenition);
+			synsets.add(dfg);
 		}
-	}
-
-	// Parse the files and create the synsets and hypernyms
-	private void parseFiles() {
-		this.synsets = new Digraph(new In(synsetsFile));
-		this.hypernyms = new Digraph(new In(hypernymsFile));
 	}
 
 	// all WordNet nouns
