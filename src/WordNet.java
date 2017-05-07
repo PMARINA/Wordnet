@@ -22,7 +22,7 @@ public class WordNet {
 				if (i == 1) {
 					String[] samosa = line[i].split(" ");
 					for (int j = 0; j < samosa.length; j++)
-						System.out.println(samosa[j]);
+						(samosa[j]);
 				}
 				else{
 					System.out.println(line[i]);
