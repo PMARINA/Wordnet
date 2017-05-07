@@ -18,6 +18,14 @@ public class WordNet {
 
 	private void parseHypernyms() {
 		hypernyms = new Digraph(synsets.size());
+		In a = new In(hypernymsFile);
+		while(a.hasNextLine()){
+			String ln = a.readLine();
+			String[] line = ln.split(",");
+			for(int i = 1; i<line.length;i++){
+				hypernyms.addEdge(Integer.parseInt(line[0]), Integer.parseInt(line[i]));
+			}
+		}
 	}
 
 	private void parseSynsets() {
