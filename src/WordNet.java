@@ -1,6 +1,8 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WordNet {
 	File synsetsFile;
@@ -19,10 +21,10 @@ public class WordNet {
 	private void parseHypernyms() {
 		hypernyms = new Digraph(synsets.size());
 		In a = new In(hypernymsFile);
-		while(a.hasNextLine()){
+		while (a.hasNextLine()) {
 			String ln = a.readLine();
 			String[] line = ln.split(",");
-			for(int i = 1; i<line.length;i++){
+			for (int i = 1; i < line.length; i++) {
 				hypernyms.addEdge(Integer.parseInt(line[0]), Integer.parseInt(line[i]));
 			}
 		}
@@ -54,14 +56,23 @@ public class WordNet {
 
 	// all WordNet nouns
 	public Iterable<String> nouns() {
-		return null;
-
+		Set<String> nouners = new HashSet<String>();
+		for (Synset s : synsets) {
+			for (String sa : s.getTerms()) {
+				nouners.add(sa);
+			}
+		}
+		return nouners;
 	}
 
 	// is the word a WordNet noun?
 	public boolean isNoun(String word) {
 		if (word == null)
 			throw new NullPointerException("word is null in isNoun()");
+		Iterable<String> b = nouns();
+		for(String s: b){
+			if(word.equals(s))return true;
+		}
 		return false;
 	}
 
@@ -87,5 +98,6 @@ public class WordNet {
 	// do unit testing of this class
 	public static void main(String[] args) {
 		WordNet a = new WordNet("Synsets.txt", "Hypernyms.txt");
+		System.out.println(a.isNoun("Abramis"));
 	}
 }
