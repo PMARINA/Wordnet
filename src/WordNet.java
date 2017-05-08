@@ -83,9 +83,18 @@ public class WordNet {
 			throw new NullPointerException("Noun1 is null in sca(noun1, noun2)");
 		if (noun2 == null)
 			throw new NullPointerException("Noun2 is null in sca(noun1, noun2)");
-		return noun2;
+		List<Synset> n1s = new ArrayList<Synset>();
+		while(hasAncestor(noun1)){
+			nls.add(ancestor(noun1));
+		}
 	}
-
+	private boolean hasAncestor(String noun){
+		return ancestor(noun)!=null;
+	}
+	private Synset ancestor(String noun){
+		
+		return null;
+	}
 	// distance between noun1 and noun2 (defined below)
 	public int distance(String noun1, String noun2) {
 		if (noun1 == null)
