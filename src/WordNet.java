@@ -70,8 +70,9 @@ public class WordNet {
 		if (word == null)
 			throw new NullPointerException("word is null in isNoun()");
 		Iterable<String> b = nouns();
-		for(String s: b){
-			if(word.equals(s))return true;
+		for (String s : b) {
+			if (word.equals(s))
+				return true;
 		}
 		return false;
 	}
@@ -83,30 +84,32 @@ public class WordNet {
 			throw new NullPointerException("Noun1 is null in sca(noun1, noun2)");
 		if (noun2 == null)
 			throw new NullPointerException("Noun2 is null in sca(noun1, noun2)");
-		List<Synset> n1s = new ArrayList<Synset>();
-		while(hasAncestor(noun1)){
-			nls.add(ancestor(noun1));
-		}
-	}
-	private boolean hasAncestor(String noun){
-		return ancestor(noun)!=null;
-	}
-	private Synset ancestor(String noun){
-		
 		return null;
 	}
+
 	// distance between noun1 and noun2 (defined below)
 	public int distance(String noun1, String noun2) {
 		if (noun1 == null)
 			throw new NullPointerException("Noun1 is null in distance(noun1, noun2)");
 		if (noun2 == null)
 			throw new NullPointerException("Noun2 is null in distance(noun1, noun2)");
-		return 0;
+		ShortestCommonAncestor a = new ShortestCommonAncestor(hypernyms);
+		int min = Integer.MAX_VALUE;
+		for (int i = 0; i < synsets.size(); i++) {
+			for (int j = 0; j < synsets.size(); j++) {
+				if (synsets.get(i).contains(noun1) && synsets.get(j).contains(noun2)) {
+					if (a.length(i, j) < min)
+						min = a.length(i, j);
+					System.out.println(a.length(i, j));
+				}
+			}
+		}
+		return min;
 	}
 
 	// do unit testing of this class
 	public static void main(String[] args) {
 		WordNet a = new WordNet("Synsets.txt", "Hypernyms.txt");
-		System.out.println(a.isNoun("Abramis"));
+		System.out.println(a.distance("baggage_car", "bailiffship"));
 	}
 }

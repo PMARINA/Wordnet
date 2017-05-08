@@ -23,4 +23,8 @@ public class Synset {
 	public String getDefenition() {
 		return this.defenition;
 	}
+
+	public boolean contains(String n) {
+		return terms.contains(n);
+	}
 }
